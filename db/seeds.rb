@@ -4,3 +4,6 @@
 # Example:
 #
 #   Person.create(first_name: 'Eric', last_name: 'Kelly')
+
+Meetup.create(name: "Hi World", description: "This is the first meeting", location: "LA")
+Meetup.create(name: "Boston Ruby", description: "This is happening tonight", location: "MA")

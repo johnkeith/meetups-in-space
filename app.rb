@@ -29,8 +29,13 @@ def authenticate!
   end
 end
 
+def registered?(meetup_id)
+  result = UsersAtMeetup.where("user_id = ? AND meetup_id = ?", current_user, meetup_id)
+  result.empty? ? false : true
+end
+
 get '/' do
-  erb :index
+  redirect '/meetups'
 end
 
 get '/auth/github/callback' do
@@ -52,4 +57,41 @@ end
 
 get '/example_protected_page' do
   authenticate!
+end
+
+
+get '/meetups' do
+  @meetups = Meetup.all.order("lower(name)")
+  erb :'/meetups/index' 
+end
+
+get '/meetups/new' do
+  authenticate!
+  erb :'/meetups/new'
+end
+
+post '/meetups/new' do
+  Meetup.create(name: params[:name], description: params[:description], location: params[:location])
+  id = Meetup.where(name: params[:name]).first.id
+  flash[:notice] = "Successfully created new event"
+  redirect "/meetups/show/#{id}"
+end
+
+post '/meetups/show' do
+  # @meetup = Meetup.find(params[:id])
+  if registered?(params[:meetup_id])
+    UsersAtMeetup.where(user_id: params[:user_id], meetup_id: params[:meetup_id]).delete_all
+    flash[:notice] = "You have left the meetup!"
+  else
+    UsersAtMeetup.create(user_id: params[:user_id], meetup_id: params[:meetup_id])
+    flash[:notice] = "You have joined the meetup!"
+  end
+  redirect "/meetups/show/#{params[:meetup_id]}"
+end
+
+get '/meetups/show/:id' do
+  @id = params[:id]
+  @meetup = Meetup.find(params[:id])
+  @attending = @meetup.users
+  erb :'/meetups/show'
 end

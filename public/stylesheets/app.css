@@ -9,7 +9,12 @@ a:visited {
   color: #FFFFFF;
   text-decoration: none;
 }
-
+form {
+  color:black;
+}
+label {
+  color:white;
+}
 .container {
   max-width: 1024px;
   margin: 0 auto;
@@ -18,10 +23,19 @@ a:visited {
 .top-bar {
   background-color: #3C3C3C;
 }
+.all-meetups {
+  border-radius:10px;
+  background-color: #3C3C3C;
+  list-style: none;
+  margin-bottom:9px;
+}
+.all-meetups li {
+  
+  padding:18px;
+}
 
 .top-bar-section {
   display: inline-block;
-  float: right;
 }
 
 .top-bar-section li {

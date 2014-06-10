@@ -1,0 +1,8 @@
+<% @meetups.each do |meetup| %>
+<ul class="all-meetups">
+  <li><a href="/meetups/show/<%= meetup.id %>"><%= meetup.name %></li>
+  <li><%= meetup.description %></li>
+  <li><%= meetup.location %></li>
+</ul>
+<% end %>
+
