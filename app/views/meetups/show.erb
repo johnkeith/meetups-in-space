@@ -12,11 +12,29 @@
 <!-- <form action="/meetups/show/<%= @meetup.id %>" method="post">
   <input type="submit" value="Join Meetup!">
 </form> -->
+<% if current_user %>
+  <form method="post" action = "/meetups/show" style="color:red;" name="register">
+    <input type = "hidden" name = "meetup_id" value = "<%= @meetup.id%>" />
+    <input type = "hidden" name = "user_id" value = "<%= current_user.id %>" />
+    <input type="submit" value = "<%= registered?(@id) ? 'LEAVE' : 'JOIN' %>"/>
+  </form>
+<% end %>
 
-<form method = "post" action = "/meetups/show" style="color:red;">
+<% @comments.each do |comment| %>
+  <ul class="comments">
+    <li><%= comment.title %></li>
+    <li><%= comment.body %></li>
+  </ul>
+<% end %>
+
+<form method="post" action="/meetups/comment" name="comment">
+  <label for="title">Title:</label>
+  <input name="title" id="title" type="text">
+  <br>
+  <textarea name="body" rows="7" cols="50" placeholder="Enter your comment"></textarea>
+  <br>
   <input type = "hidden" name = "meetup_id" value = "<%= @meetup.id%>" />
-  <input type = "hidden" name = "user_id" value = "<%= current_user.id %>" />
-  <input type="submit" value = "<%= registered?(@id) ? 'LEAVE' : 'JOIN' %>"/>
+  <input type="submit" value="Submit">
 </form>
 
 

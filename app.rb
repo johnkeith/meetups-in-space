@@ -77,6 +77,12 @@ post '/meetups/new' do
   redirect "/meetups/show/#{id}"
 end
 
+post '/meetups/comment' do
+  authenticate!
+  Comment.create(user_id: current_user.id, meetup_id: params[:meetup_id], title: params[:title], body: params[:body])
+  redirect "/meetups/show/#{params[:meetup_id]}"
+end
+
 post '/meetups/show' do
   # @meetup = Meetup.find(params[:id])
   if registered?(params[:meetup_id])
@@ -93,5 +99,6 @@ get '/meetups/show/:id' do
   @id = params[:id]
   @meetup = Meetup.find(params[:id])
   @attending = @meetup.users
+  @comments = @meetup.comments
   erb :'/meetups/show'
 end
